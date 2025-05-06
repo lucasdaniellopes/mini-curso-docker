@@ -126,10 +126,25 @@ Para configurar o GitHub Actions para CI/CD:
              tags: ${{ secrets.DOCKER_HUB_USERNAME }}/docker-demo:latest
    ```
 
-5. No GitHub, vá para Settings > Secrets > Actions e adicione os seguintes secrets:
+5. Adicione os secrets necessários no GitHub:
 
-   - `DOCKER_HUB_USERNAME`: seu nome de usuário no Docker Hub
-   - `DOCKER_HUB_ACCESS_TOKEN`: seu token de acesso do Docker Hub (gere em https://hub.docker.com/settings/security)
+   **Para adicionar secrets em um repositório:**
+   - Acesse seu repositório no GitHub
+   - Clique na aba "Settings" no topo do repositório
+   - No menu lateral, encontre "Secrets and variables" e clique em "Actions"
+   - Clique no botão "New repository secret"
+   - Adicione os seguintes secrets:
+     - Nome: `DOCKER_HUB_USERNAME` | Valor: seu nome de usuário no Docker Hub
+     - Nome: `DOCKER_HUB_ACCESS_TOKEN` | Valor: seu token de acesso do Docker Hub
+       (gere o token em https://hub.docker.com/settings/security)
+
+   **Para adicionar secrets em uma organização (caso esteja usando):**
+   - Acesse a página da sua organização no GitHub
+   - Clique em "Settings"
+   - No menu lateral, clique em "Secrets and variables" e depois em "Actions"
+   - Clique em "New organization secret"
+   - Adicione os mesmos secrets mencionados acima
+   - Escolha quais repositórios da organização podem acessar esses secrets
 
 6. Faça um push para o branch main para acionar o workflow:
 
