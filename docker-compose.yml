@@ -1,0 +1,56 @@
+# Arquivo de configuração do Docker Compose - define todos os serviços da aplicação
+
+services: # Define os serviços (containers) que compõem a aplicação
+  # Serviço da aplicação web
+  web:
+    build: . # Constrói a imagem usando o Dockerfile no diretório atual
+    container_name: docker-demo-web # Nome personalizado para o container
+    ports:
+      - "8080:80" # Mapeia a porta 8080 do host para a porta 80 do container
+    volumes:
+      - ./app:/usr/share/nginx/html # Monta o diretório app local no container (para desenvolvimento)
+    depends_on:
+      - db # Garante que o banco de dados seja iniciado primeiro
+    restart: unless-stopped # Reinicia o container automaticamente se ele parar
+    networks:
+      - app-network # Conecta o container a esta rede
+
+  # Serviço de banco de dados PostgreSQL
+  db:
+    image: postgres:13-alpine # Usa a imagem oficial do PostgreSQL (versão Alpine - leve)
+    container_name: docker-demo-db # Nome personalizado para o container
+    environment: # Variáveis de ambiente para configurar o PostgreSQL
+      POSTGRES_PASSWORD: rootpassword # Senha do banco (não use em produção!)
+      POSTGRES_DB: demoapp # Nome do banco de dados a ser criado
+      POSTGRES_USER: demouser # Nome do usuário a ser criado
+    volumes:
+      - db_data:/var/lib/postgresql/data # Volume persistente para dados do PostgreSQL
+    ports:
+      - "5432:5432" # Expõe a porta do PostgreSQL para acesso externo
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Serviço pgAdmin - interface web para gerenciar o PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4 # Usa a imagem oficial do pgAdmin
+    container_name: docker-demo-pgadmin # Nome personalizado para o container
+    environment: # Variáveis de ambiente para configurar o pgAdmin
+      PGADMIN_DEFAULT_EMAIL: admin@example.com # Email de login (pode ser qualquer email)
+      PGADMIN_DEFAULT_PASSWORD: admin # Senha de login (não use em produção!)
+    ports:
+      - "8081:80" # Mapeia a porta 8081 do host para a porta 80 do container
+    depends_on:
+      - db # Garante que o banco de dados seja iniciado primeiro
+    restart: unless-stopped
+    networks:
+      - app-network
+
+# Definição dos volumes - permitem persistência de dados mesmo quando os containers são destruídos
+volumes:
+  db_data: # Volume para armazenar os dados do PostgreSQL
+
+# Definição das redes - permitem que os containers se comuniquem entre si
+networks:
+  app-network:
+    driver: bridge # Tipo de rede (bridge é o padrão para comunicação local)
