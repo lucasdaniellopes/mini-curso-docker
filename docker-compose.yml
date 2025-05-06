@@ -1,54 +1,48 @@
 services:
-  # Serviço da aplicação web
   web:
-    build: . # Usa o Dockerfile no diretório atual para construir a imagem
-    container_name: docker-demo-web # Nome personalizado para o container
+    build: .
+    container_name: docker-demo-web
     ports:
-      - "8080:80" # Mapeia porta 8080 do host para porta 80 do container
+      - "8080:80"
     volumes:
-      - ./app:/usr/share/nginx/html # Monta o diretório app local no container (para desenvolvimento)
+      - ./app:/usr/share/nginx/html
     depends_on:
-      - db # Garante que o banco de dados seja iniciado primeiro
+      - db
     restart: unless-stopped
     networks:
       - app-network
-
-  # Serviço de banco de dados PostgreSQL
   db:
-    image: postgres:13-alpine # Usa a imagem oficial do PostgreSQL (versão Alpine - leve)
-    container_name: docker-demo-db # Nome personalizado para o container
-    environment: # Variáveis de ambiente para configurar o PostgreSQL
-      POSTGRES_PASSWORD: rootpassword # Senha do banco (não use em produção!)
-      POSTGRES_DB: demoapp # Nome do banco de dados a ser criado
-      POSTGRES_USER: demouser # Nome do usuário a ser criado
+    image: postgres:13-alpine
+    container_name: docker-demo-db
+    environment:
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: demoapp
+      POSTGRES_USER: demouser
     volumes:
-      - db_data:/var/lib/postgresql/data # Volume persistente para dados do PostgreSQL
+      - db_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432" # Expõe a porta do PostgreSQL para acesso externo
+      - "5432:5432"
     restart: unless-stopped
     networks:
       - app-network
 
-  # Interface de administração para o PostgreSQL (pgAdmin)
   pgadmin:
-    image: dpage/pgadmin4 # Usa a imagem oficial do pgAdmin 4
-    container_name: docker-demo-pgadmin # Nome personalizado para o container
-    environment: # Variáveis de ambiente para configurar o pgAdmin
-      PGADMIN_DEFAULT_EMAIL: admin@example.com # Email para login no pgAdmin
-      PGADMIN_DEFAULT_PASSWORD: admin # Senha para login (não use em produção!)
+    image: dpage/pgadmin4
+    container_name: docker-demo-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "8081:80" # Acesse o pgAdmin em localhost:8081
+      - "8081:80"
     depends_on:
       - db
     restart: unless-stopped
     networks:
       - app-network
 
-# Volumes para persistência de dados
 volumes:
-  db_data: # Volume para armazenar os dados do PostgreSQL (permanece mesmo se o container for removido)
+  db_data:
 
-# Redes para comunicação entre containers
 networks:
   app-network:
     driver: bridge
