@@ -71,8 +71,6 @@ docker compose down
 
 > **Nota**: Em versões mais recentes do Docker, o comando `docker-compose` foi substituído por `docker compose` (sem hífen). Ambos funcionam, mas recomenda-se usar a nova sintaxe.
 
-
-
 ## GitHub Actions
 
 Para configurar o GitHub Actions para CI/CD:
@@ -80,6 +78,7 @@ Para configurar o GitHub Actions para CI/CD:
 1. Crie um repositório no GitHub
 
 2. Faça push do código para o repositório:
+
    ```bash
    git init
    git add .
@@ -90,19 +89,21 @@ Para configurar o GitHub Actions para CI/CD:
    ```
 
 3. Crie a estrutura de diretórios para o workflow:
+
    ```bash
    mkdir -p .github/workflows
    ```
 
 4. Crie o arquivo de workflow `.github/workflows/docker-ci-cd.yml` com o seguinte conteúdo:
+
    ```yaml
    name: Docker CI/CD
 
    on:
      push:
-       branches: [ main ]
+       branches: [main]
      pull_request:
-       branches: [ main ]
+       branches: [main]
 
    jobs:
      build-and-push:
@@ -110,13 +111,13 @@ Para configurar o GitHub Actions para CI/CD:
        steps:
          - name: Checkout código
            uses: actions/checkout@v2
-         
+
          - name: Login no Docker Hub
            uses: docker/login-action@v1
            with:
              username: ${{ secrets.DOCKER_HUB_USERNAME }}
              password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-         
+
          - name: Build e Push
            uses: docker/build-push-action@v2
            with:
@@ -126,10 +127,12 @@ Para configurar o GitHub Actions para CI/CD:
    ```
 
 5. No GitHub, vá para Settings > Secrets > Actions e adicione os seguintes secrets:
+
    - `DOCKER_HUB_USERNAME`: seu nome de usuário no Docker Hub
    - `DOCKER_HUB_ACCESS_TOKEN`: seu token de acesso do Docker Hub (gere em https://hub.docker.com/settings/security)
 
 6. Faça um push para o branch main para acionar o workflow:
+
    ```bash
    git add .
    git commit -m "Adiciona workflow de CI/CD"
@@ -196,10 +199,3 @@ docker info
 # Verificar a versão do Docker
 docker version
 ```
-
-## Conclusão
-
-Este material prático fornece uma introdução ao Docker, desde os conceitos básicos até a implementação de CI/CD com GitHub Actions. Siga as instruções passo a passo para demonstrar cada conceito durante o minicurso.
-
-Bom trabalho e boa sorte com o minicurso!
-
