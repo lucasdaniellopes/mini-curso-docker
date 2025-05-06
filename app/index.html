@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Demo App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker Logo" class="logo">
+            <h1>Docker Demo App</h1>
+        </header>
+        
+        <main>
+            <section class="info-box">
+                <h2>Bem-vindo ao Minicurso de Docker!</h2>
+                <p>Esta é uma aplicação de demonstração para o minicurso "Docker: Do Básico ao Deploy com GitHub Actions".</p>
+                <p>Servidor: <span id="hostname">carregando...</span></p>
+                <p>Acessos: <span id="counter">carregando...</span></p>
+            </section>
+            
+            <section class="docker-commands">
+                <h3>Comandos Docker Básicos</h3>
+                <div class="command-list">
+                    <div class="command">
+                        <code>docker pull</code>
+                        <span>Baixar uma imagem</span>
+                    </div>
+                    <div class="command">
+                        <code>docker run</code>
+                        <span>Criar e iniciar um container</span>
+                    </div>
+                    <div class="command">
+                        <code>docker ps</code>
+                        <span>Listar containers em execução</span>
+                    </div>
+                    <div class="command">
+                        <code>docker stop</code>
+                        <span>Parar um container</span>
+                    </div>
+                    <div class="command">
+                        <code>docker rm</code>
+                        <span>Remover um container</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Minicurso Docker - UNIFIP - <span id="current-year"></span></p>
+        </footer>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

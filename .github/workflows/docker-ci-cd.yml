@@ -1,0 +1,33 @@
+name: Docker CI/CD
+
+# Eventos que acionam o workflow
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Job para construir e publicar a imagem Docker
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout do código-fonte
+      - name: Checkout código
+        uses: actions/checkout@v2
+      
+      # Login no Docker Hub
+      - name: Login no Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      
+      # Construir e publicar a imagem Docker
+      - name: Build e Push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/docker-demo:latest
